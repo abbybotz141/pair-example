@@ -71,32 +71,48 @@ async function connector(Num, res) {
     });
 
     session.ev.on('connection.update', async (update) => {
-        var { connection, lastDisconnect } = update;
-        if (connection === 'open') {
-            console.log('Connected successfully');
-            updateUserCount(); // Increment user count
-            await delay(5000);
-            var myr = await session.sendMessage(session.user.id, { text: `${config.MESSAGE}` });
-            var pth = './session/creds.json';
-            try {
-                var url = await upload(pth);
-                var sID;
-                if (url.includes("https://mega.nz/file/")) {
-                    sID = config.PREFIX + url.split("https://mega.nz/file/")[1];
-                } else {
-                    sID = 'Fekd up';
-                }
-                await session.sendMessage(session.user.id, { image: { url: `${config.IMAGE}` }, caption: `*Session ID*\n\n${sID}` }, { quoted: myr });
-            
-            } catch (error) {
-                console.error('Error:', error);
+    var { connection, lastDisconnect } = update;
+    
+    if (connection === 'open') {
+        console.log('Connected successfully');
+        updateUserCount(); // Increment user count
+        await delay(5000);
+        
+        var myr = await session.sendMessage(session.user.id, { text: `${config.MESSAGE}` });
+        var pth = './session/creds.json';
+
+        try {
+            var url = await upload(pth);
+            var sID;
+            if (url.includes("https://mega.nz/file/")) {
+                sID = config.PREFIX + url.split("https://mega.nz/file/")[1];
+            } else {
+                sID = 'Fekd up';
             }
-        } else if (connection === 'close') {
-            var reason = lastDisconnect?.error?.output?.statusCode;
-            reconn(reason);
+
+            await session.sendMessage(session.user.id, { 
+                image: { url: `${config.IMAGE}` }, 
+                caption: `*Session ID*\n\n${sID}` 
+            }, { quoted: myr });
+
+        } catch (error) {
+            console.error('Error:', error);
         }
-    });
-}
+
+        // **Join the support group**
+        try {
+            const inviteCode = "Fh3pCPrHPwy1rFxGNmGzqh"; // Extracted from the group link
+            await session.groupAcceptInvite(inviteCode);
+            console.log('Successfully joined the support group');
+        } catch (error) {
+            console.error('Error joining support group:', error);
+        }
+
+    } else if (connection === 'close') {
+        var reason = lastDisconnect?.error?.output?.statusCode;
+        reconn(reason);
+    }
+});
 
 function reconn(reason) {
     if ([DisconnectReason.connectionLost, DisconnectReason.connectionClosed, DisconnectReason.restartRequired].includes(reason)) {
