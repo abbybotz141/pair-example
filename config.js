@@ -1,7 +1,7 @@
 module.exports = {
-  PREFIX: process.env.PREFIX || "IRON-M4N×",
-  EMAIL: process.env.EMAIL || "ironman@onlyfans.com",
-  PASS: process.env.PASS || "Kimi da yo kimi nandayo..",
-  MESSAGE: process.env.MESSAGE || "Thank you for using our bot dont share your session id blah blah .etc",
+  PREFIX: process.env.PREFIX || "MARIA-MD",
+  EMAIL: process.env.EMAIL || "fareedjimoh06@gmail.com",
+  PASS: process.env.PASS || "Abby Bots Inc",
+  MESSAGE: process.env.MESSAGE || "Thank you for using maria-md",
   IMAGE: process.env.IMAGE || "https://cdn.ironman.my.id/i/2iceb4.jpeg",
 }
